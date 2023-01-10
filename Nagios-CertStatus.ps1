@@ -31,8 +31,8 @@ $certGood = @()
 
 # test certlist to see the status of each cert, recording subjectName and expiration date to pertinent array
 foreach($cert in $certlist) {
-    $dt = $cert.NotAfter.ToString()
-    $nm = $cert.SubjectName.Name.ToString()
+    $cert.NotAfter ? ($dt = $cert.NotAfter.ToString()) : ($dt = $cert)
+    $cert.SubjectName.Name ? ($nm = $cert.SubjectName.Name.ToString()) : ($nm = $cert)
     
     if($cert.NotAfter -lt $today) {
         $certExpired += " $dt : $nm `n"
