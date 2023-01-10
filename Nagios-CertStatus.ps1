@@ -66,7 +66,7 @@ elseif ($certWarn.count -gt 0 ) {
 }
 elseif ($certExpired.count -gt 0 -and $e -eq 1) {
     Write-Output " Expired($includeExpired): $certExpired"  
-    if($includeExpired) { exit 1 } else { exit 0 } #tried a ternary but errored on "exit"
+    if($includeExpired) { exit 1 } else { exit 0 } #tried a ternary but errored on "exit", returning "ok" to nagios for empty
 }
 elseif ($certGood.count -gt 0) {
     Write-Output "OK: $certGood"
