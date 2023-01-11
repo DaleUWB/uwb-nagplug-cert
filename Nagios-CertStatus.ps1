@@ -31,23 +31,23 @@ $certGood = @()
 
 # test certlist to see the status of each cert, recording subjectName and expiration date to pertinent array
 foreach($cert in $certlist) {
-    $cert.NotAfter ? ($dt = $cert.NotAfter.ToString()) : ( Continue )
-    $cert.SubjectName.Name ? ($nm = $cert.SubjectName.Name.ToString()) : ( Continue )
+    $cert.NotAfter ? ($dt = $cert.NotAfter.ToString()) : ( $dt = 'Location' )
+    $cert.SubjectName.Name ? ($nm = $cert.SubjectName.Name.ToString()) : ( $nm = $cert )
     
     if($cert.NotAfter -lt $today) {
-        $certExpired += " $dt : $nm `n"
+        $certExpired += " $dt : $nm"
         Continue
     } 
     elseif($cert.NotAfter -lt ($today+$critTS) ){
-        $certCrit += " $dt : $nm `n"
+        $certCrit += " $dt : $nm"
         Continue
     }
     elseif($cert.NotAfter -lt ($today+$warnTS) ){
-        $certWarn += " $dt : $nm `n"
+        $certWarn += " $dt : $nm"
         Continue
     }
     elseif($cert.NotAfter -gt ($today) ){
-        $certGood += " $dt : $nm `n"
+        $certGood += " $dt : $nm"
         Continue
     }
     else { 
@@ -65,7 +65,7 @@ elseif ($certWarn.count -gt 0 ) {
     exit 1 #Returns WARNING STATUS
 }
 elseif ($certExpired.count -gt 0 -and $e -eq 1) {
-    Write-Output " Expired($includeExpired): $certExpired"  
+    Write-Output " Expired: $certExpired"  
     if($includeExpired) { exit 1 } else { exit 0 } #tried a ternary but errored on "exit", returning "ok" to nagios for empty
 }
 elseif ($certGood.count -gt 0) {
