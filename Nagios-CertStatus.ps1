@@ -21,7 +21,7 @@ $warnTS = New-TimeSpan -Days $w
 $critTS = New-TimeSpan -Days $c
 $today = Get-Date
 
-$certlist = get-childitem -path cert: -recurse #-Expiringindays $w
+$certlist = Get-ChildItem -path cert: -recurse 
 
 # create arrays to store output
 $certExpired = @()
@@ -31,23 +31,21 @@ $certGood = @()
 
 # test certlist to see the status of each cert, recording subjectName and expiration date to pertinent array
 foreach($cert in $certlist) {
-    $cert.NotAfter ? ($dt = $cert.NotAfter.ToString()) : ( $dt = 'Location' )
-    $cert.SubjectName.Name ? ($nm = $cert.SubjectName.Name.ToString()) : ( $nm = $cert )
     
-    if($cert.NotAfter -lt $today) {
-        $certExpired += " $dt : $nm"
+    if($cert.NotAfter -lt $today -and $cert.NotAfter) {
+        $certExpired += $cert
         Continue
     } 
-    elseif($cert.NotAfter -lt ($today+$critTS) ){
-        $certCrit += " $dt : $nm"
+    elseif($cert.NotAfter -lt ($today+$critTS) -and $cert.NotAfter){
+        $certCrit += $cert
         Continue
     }
-    elseif($cert.NotAfter -lt ($today+$warnTS) ){
-        $certWarn += " $dt : $nm"
+    elseif($cert.NotAfter -lt ($today+$warnTS) -and $cert.NotAfter){
+        $certWarn += $cert
         Continue
     }
     elseif($cert.NotAfter -gt ($today) ){
-        $certGood += " $dt : $nm"
+        $certGood += $cert
         Continue
     }
     else { 
@@ -57,22 +55,27 @@ foreach($cert in $certlist) {
 
 # take output arrays and test to see if they have entries, output pertinent array and nagios code
 if ($certCrit.count -gt 0 ) {
-    Write-Output "CRITICAL($critTS): $certCrit"
+    Write-Output "CRITICAL($critTS): `n" 
+    $certCrit | Sort -Property NotAfter | Format-Table -Property NotAfter, Thumbprint, Subject
     exit 2 #Returns CRITICAL STATUS
 }
 elseif ($certWarn.count -gt 0 ) {
-    Write-Output " WARNING($warnTS): $certWarn"  
+    Write-Output " WARNING($warnTS): `n" 
+    $certWarn | Sort -Property NotAfter | Format-Table -Property NotAfter, Thumbprint, Subject
     exit 1 #Returns WARNING STATUS
 }
 elseif ($certExpired.count -gt 0 -and $e -eq 1) {
-    Write-Output " Expired: $certExpired"  
-    if($includeExpired) { exit 1 } else { exit 0 } #tried a ternary but errored on "exit", returning "ok" to nagios for empty
+    Write-Output " Expired: `n" 
+    $certExpired | Sort -Property NotAfter | Format-Table -Property NotAfter, Thumbprint, Subject
+    exit 1 #Returns WARNING status for expired
 }
 elseif ($certGood.count -gt 0) {
-    Write-Output "OK: $certGood"
+    Write-Output "OK: `n"
+    $certGood | Sort -Property NotAfter | Format-Table -Property NotAfter, Thumbprint, Subject
     exit 0 #Returns OK STATUS
 }
 else {
-    Write-Output "No Certificates or Script error"
+    Write-Output "No Certificates or Script error" 
+    $certlist | Sort -Property NotAfter | Format-Table -Property NotAfter, Thumbprint, Subject
     exit 3 #unknown
 }
