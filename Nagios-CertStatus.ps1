@@ -7,8 +7,16 @@ Nagios-CertStatus will return a humna readable status and a status code for Nagi
 the client installed on the windows machine. The executing machine will have at least signed certs 
 executable. 
 
+Critical (nagios 2) will return only certs in the critical timeframe
+
+Warning (nagios 1) will return certs in the warning timeframe and Optional "-e" property to include (1) or exclude (0) expired certs in warning.
+
+OK (nagios 0) will return valid certs
+
+No Scripts or Error ( nagios 3 ) will signal somthing is wrong
+
 .EXAMPLE
-Nagios-CertStatus -cert server.uwb.edu
+.\Nagios-CertStatus.ps1 -w 30 -c 7 -e 0
 
 #>
 
@@ -29,7 +37,7 @@ $certCrit = @()
 $certWarn = @()
 $certGood = @()
 
-# test certlist to see the status of each cert, recording subjectName and expiration date to pertinent array
+# iterate and test certlist to see the status of each cert, recording cert to pertinent array
 foreach($cert in $certlist) {
     
     if($cert.NotAfter -lt $today -and $cert.NotAfter) {
@@ -53,29 +61,30 @@ foreach($cert in $certlist) {
     }
 }
 
-# take output arrays and test to see if they have entries, output pertinent array and nagios code
+# checking obj and assigning nagios code
+# will write output and table go to nagios?
 if ($certCrit.count -gt 0 ) {
-    Write-Output "CRITICAL($critTS): `n" 
+    Write-Output "CRITICAL: `n" 
     $certCrit | Sort -Property NotAfter | Format-Table -Property NotAfter, Thumbprint, Subject
-    exit 2 #Returns CRITICAL STATUS
+    exit 2 #Returns CRITICAL status
 }
 elseif ($certWarn.count -gt 0 ) {
-    Write-Output " WARNING($warnTS): `n" 
+    Write-Output " WARNING: `n" 
     $certWarn | Sort -Property NotAfter | Format-Table -Property NotAfter, Thumbprint, Subject
-    exit 1 #Returns WARNING STATUS
+    exit 1 #Returns WARNING status
 }
 elseif ($certExpired.count -gt 0 -and $e -eq 1) {
     Write-Output " Expired: `n" 
     $certExpired | Sort -Property NotAfter | Format-Table -Property NotAfter, Thumbprint, Subject
-    exit 1 #Returns WARNING status for expired
+    exit 1 #Returns WARNING status
 }
 elseif ($certGood.count -gt 0) {
     Write-Output "OK: `n"
     $certGood | Sort -Property NotAfter | Format-Table -Property NotAfter, Thumbprint, Subject
-    exit 0 #Returns OK STATUS
+    exit 0 #Returns OK status
 }
 else {
     Write-Output "No Certificates or Script error" 
-    $certlist | Sort -Property NotAfter | Format-Table -Property NotAfter, Thumbprint, Subject
+    #(uncomment for debuging) $certlist | Sort -Property NotAfter | Format-Table -Property NotAfter, Thumbprint, Subject
     exit 3 #unknown
 }
