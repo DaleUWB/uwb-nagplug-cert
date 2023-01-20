@@ -15,8 +15,24 @@ OK (nagios 0) will return valid certs
 
 No Scripts or Error ( nagios 3 ) will signal somthing is wrong
 
+.PARAMETER w
+Number of days defined as the warning timeframe before the certificate expiration date. Default 30
+
+.PARAMETER c
+Number of days defined as the critical timeframe before the certificate expiration date. Default 7
+
+.PARAMETER e
+Boolean parameter to either include (1) expired certificates with a warning status, or exclude (0) expired certificates. Default 1
+
 .EXAMPLE
 .\Nagios-CertStatus.ps1 -w 30 -c 7 -e 0
+This will return certificates expireing in 7 days as a critical if any, 
+otherwise it will return certificates in warning. Expired certificates are ignored.
+
+.EXAMPLE
+.\Nagios-CertStatus.ps1 -w 120 -c 30 -e 1
+This will return certificates expireing in 7 days as a critical if any, 
+otherwise it will return certificates in warning. Expired certificates are ignored.
 
 #>
 
