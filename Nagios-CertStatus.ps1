@@ -34,6 +34,9 @@ otherwise it will return certificates in warning. Expired certificates are ignor
 This will return certificates expireing in 7 days as a critical if any, 
 otherwise it will return certificates in warning. Expired certificates are ignored.
 
+.OUTPUTS
+This command will produce a formatted list of certificates
+
 #>
 
 param (
