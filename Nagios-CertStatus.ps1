@@ -22,7 +22,7 @@ Number of days defined as the warning timeframe before the certificate expiratio
 Number of days defined as the critical timeframe before the certificate expiration date. Default 7
 
 .PARAMETER e
-Boolean parameter to either include (1) expired certificates with a warning status, or exclude (0) expired certificates. Default 1
+Boolean parameter to either include (1) expired certificates with a warning status, or exclude (0) expired certificates. Default 0
 
 .EXAMPLE
 .\Nagios-CertStatus.ps1 -w 30 -c 7 -e 0
@@ -42,7 +42,7 @@ This command will produce a formatted list of certificates
 param (
     [int]$w = 30,
     [int]$c = 7,
-    [bool]$e = 1
+    [bool]$e = 0
 )
 $warnTS = New-TimeSpan -Days $w
 $critTS = New-TimeSpan -Days $c
