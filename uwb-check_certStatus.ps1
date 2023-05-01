@@ -83,25 +83,26 @@ foreach($cert in $certlist) {
 # checking obj and assigning nagios code
 # will write output and table go to nagios?
 if ($certCrit.count -gt 0 ) {
-    Write-Output "CRITICAL: `n" 
+    Write-Output "CRITICAL: " 
     #$certCrit | Sort -Property NotAfter | Format-Table -Property NotAfter, Thumbprint, Subject
     $certCrit.count
     exit 2 #Returns CRITICAL status
 }
 elseif ($certWarn.count -gt 0 ) {
-    Write-Output " WARNING: `n" 
+    Write-Output " WARNING: " 
     #$certWarn | Sort -Property NotAfter | Format-Table -Property NotAfter, Thumbprint, Subject
     $certWarn.count
     exit 1 #Returns WARNING status
 }
 elseif ($certExpired.count -gt 0 -and $e -eq 1) {
-    Write-Output " Expired: `n" 
+    Write-Output " Expired: "
     #$certExpired | Sort -Property NotAfter | Format-Table -Property NotAfter, Thumbprint, Subject
     $certExpired.count
     exit 1 #Returns WARNING status
 }
 elseif ($certGood.count -gt 0) {
-    Write-Output "OK: `n"
+    Write-Output "OK: " 
+    $certGood.count
     #$certGood | Sort -Property NotAfter | Format-Table -Property NotAfter, Thumbprint, Subject
     exit 0 #Returns OK status
 }
@@ -113,8 +114,8 @@ else {
 # SIG # Begin signature block
 # MIIv8wYJKoZIhvcNAQcCoIIv5DCCL+ACAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCB9lGEIl/4aI3aO
-# q0TZlLJt4p4xh/1UuAzrZpUATQlOGaCCJwowggVvMIIEV6ADAgECAhBI/JO0YFWU
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCAibN6EKPU06JB+
+# JT0qeluKHG+XyAWw2LMP0Kz7AQd0uaCCJwowggVvMIIEV6ADAgECAhBI/JO0YFWU
 # jTanyYqJ1pQWMA0GCSqGSIb3DQEBDAUAMHsxCzAJBgNVBAYTAkdCMRswGQYDVQQI
 # DBJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcMB1NhbGZvcmQxGjAYBgNVBAoM
 # EUNvbW9kbyBDQSBMaW1pdGVkMSEwHwYDVQQDDBhBQUEgQ2VydGlmaWNhdGUgU2Vy
@@ -327,44 +328,44 @@ else {
 # VQQDEyJTZWN0aWdvIFB1YmxpYyBDb2RlIFNpZ25pbmcgQ0EgUjM2AhEA0gM+VnIb
 # Pv7GgfduIoc6zzANBglghkgBZQMEAgEFAKCBhDAYBgorBgEEAYI3AgEMMQowCKAC
 # gAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsx
-# DjAMBgorBgEEAYI3AgEVMC8GCSqGSIb3DQEJBDEiBCAUUsyv6F/LRH6PLL/5Fbbf
-# I7lKlJbmo3JsY+8oBXX0XzANBgkqhkiG9w0BAQEFAASCBACVW45oLoqHxOfoI3nN
-# 6Sk2iroXt0zqP2UeDcw6Hl5w+uZ8Z7faVLBVHyiutEV/q+4Pb1JY/SX33Nm3Ldr6
-# rSgx3RXZUiN00aQJE7YWLnoB1OF5L+SDcdr9mzFxVunM9Wn1uBhkbPJiH53Nyklr
-# hfzYXuL2MYoTjTYwua2+5tRZIhUNcWb6nOG2HC9H25U2HNPiUQTeHrq17uA7q7lq
-# POHdcVzvHOL3yV2AVdM0SWC8p7e85hRGpz0Ymv/3USp0qAK0nfxj0vzT6WvVGTAi
-# bg0CUwr1MSCXM5I+2KTkGoDVyNiZzjzFtm2NQ7xbcbk6X1a/IwmhNB03zCAKflDI
-# qKxwJUMTFRFgtpeaDCLAdy3SKLzO0d5FEnEz7khSgw1/0r3GYr4KZVjVY0SA+X2v
-# PUwJBaUt7V/rYtZNqn6DoE05qQX1XJPpSmqo1QxpsKdSsoMJqEZDGF0c4Y3ImSY8
-# xfnxMpnR7ipTRSP1hQaCJC3nc2hNt11XIRWZHnUMF1riKJ/1XJ6YWP7pzTBPybJY
-# 16WDQMkyFmujvuR/hgTOdUVYf6dWvfZChZbAENtB3rUvmKAb501QRhuXNYRmDQg1
-# vcxzA+E1EJUn60VHWfZLH7+UOCMilmYGIRCHVvZmwB4JSj8ot6dLf0snMk/xjFtY
-# JP9dAY83wDuPxkfjPPT9Z3LUJ2elf4Aai4PyuV3boAQUrrd4gZTOQQ1DOUob39M9
-# qpDLHIIJrHOE1PJat7Sj9LbCHKJXUXUsR6ZlQo+6QWy0ygx6Uezepkj3V9lddNCf
-# PyiY1fHRxbDHn7J0o8WekfeEjpUQJvSPM4xIJbPgaGurhcMRJ8IEAbqtbOZomHMJ
-# BpxkPWHDW4v/5Oa+JYaONMkK5tY2gWBpj0E4z4MFmjmiDK/EoBoI7SX9Od1bGOD2
-# FoKwNtUR3cBuB/6dPic696zjYlOlek4Sm/5fc4lnM82WiNCyHTEhPLMQwccKXAFG
-# h2EzWSVE8NJWjd69hF3INZhHKMkbuiCOFwVo+o9k6ozVKejSy+f6QO1yNUcy+Lum
-# f+leYMPDDocirb0RI0TWP+nOMDaisCcYPwNobqNP4IjE7Q82NJXN3nVlhCuNMrpQ
-# ZBJvJbZ142mLBtdjTghPZ208aeKA0pq/RHofyqQPRUmVqrZvrlKhxPLV+mbPlXhW
-# CRq0wsVTOkzMSsrftbonZiNE7B+w3l4/VGDGIRj8LfOqBv5ontrBSATZjbwph5IO
-# 7tkHYGLj+KGncDZ9943fbCyW/GhaR2mq7z9XRY7aP3DN+Z39m66kW7+iHmxVGNg4
-# wOz/Oq3dqDQxdliRyDXI0TUkv8TSTuXolgX+q5dC4Hqr3kpVwRAdeP51is9tzur0
-# wj6OoYIDIDCCAxwGCSqGSIb3DQEJBjGCAw0wggMJAgEBMHcwYzELMAkGA1UEBhMC
+# DjAMBgorBgEEAYI3AgEVMC8GCSqGSIb3DQEJBDEiBCANJivTBMjnvOGGhel99uAl
+# RgCPsBNGw5CQWPJGSJMjJjANBgkqhkiG9w0BAQEFAASCBABE6kNAH7qUkhZJb4Rx
+# /v/r4wNDlAu0mQxrtoFhP8M2rTgup/hhT70novg2F1CwVl0/l5vk11Y67fqRfGV3
+# u7dEs3m3qCoXnZFneKrz0grLrYTA5MWIUIfItgdZOV8wuadat2gq5YRe63Kvqi82
+# F+XhKgQxZ2FkC1DRVUimMsK+sj4iIDwAUxhd+dwhQkWwopBRuH4NvBLAF/rFtx78
+# Ct1yD/DNAtG6xZCSZDKPcLAhK+IQRhZ7vtY7dv2qjKdQSqvqkUMYfBU5f05DdKcK
+# tOYctvz0zNYO+zHfPRJw6AgT9YEAgWen1tDG/FkTxInU96Wspsk9k4wIt36uzXLl
+# zix1zulQ7ocLewuZK1Vs3uGcN7iXLbmDfjQuoNQhsM9Xxr2arflnqz/3WcpZRrIM
+# O2TiyRo6bpe0C7zhwac1i+bXnrk67CvETLUX2dUg76+pdwiFt7PXln7p2qnS05bw
+# OmH4DgiudqHEMKt9pCy5w0YTAedJ+MUgeQzqBJocIhbEOKicpOixnYMy5tQEI4n2
+# LqDPbpMuZmcT9e1ZdQbn+IN7Gdyvh4kjU4XTDpTWNfuiZqV/vM+xFvwmLQs2otaw
+# qSl4cRKc/jYrJWvZxfDJ3yqTHRVRg9QpjPi2UcsFZ/HVJtL9PiNeFqg43dHru+K4
+# KOBmaVihxd8jnnldyjKaekPJA9vY4lpNmgaQALRZWL2biV1KBrm0nm12MOGAjwzP
+# y9jZhX/9QSEGQR1DPiiVkeW1hDpk+UwxFPNFpfWj+4Sxu7jslvdtEyqyDThc9aT1
+# YlaNZBqWuBs/CTGF1gSmEc6hNJ68ReLREoBPC9deMNt4CYsPBeiOsBHSYz/2z0c1
+# A5+rRcUd/qVaEWbqYKGnFy0Zs3ja+0E6POwTN7ahDMg7XobpX9NqT+1cuddGKQZw
+# bXGqz10Y6Jahx1+LQMcT+SKvYKQaiK0RlSHCczMJwAJ5+BPgXKqqp6dSKYhC30TA
+# Wj/K7aCwUfZ5zlNBd+YSnFMsy21RDgYTYfmhK5F/2hobl8mJZDK0Wn6o/k98eGdx
+# HSk30hqmH9GUzFvk9vK9x2wRruIuzNmDeWnGrdiqOhtzV1npAdg+cXxt5+StQMh3
+# BaYIXA9ndiqa+Q2pdETbqw8yvkf+MkP5rqPDl3/yE1A2ozwbjnJaWZfd1lIOvANW
+# sq+elky/FiNU1LGiafzNNvEI8Z2P5zTxtY0ltVxkeanPRlHJmZObB6oJNUdJ6q6j
+# +vDtPLsXHPg7YECfZVWpRLeNIK5Rvdc5Vv1QxocqmWpemUHyPZCVwwsRIqm9MlBu
+# pjDuGlLjxmpmw8m+pYPHvyd8BxBvImaP5/NZEJhwja2OvQq5ApBlU/63z3nL4bRH
+# zmbRoYIDIDCCAxwGCSqGSIb3DQEJBjGCAw0wggMJAgEBMHcwYzELMAkGA1UEBhMC
 # VVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTswOQYDVQQDEzJEaWdpQ2VydCBU
 # cnVzdGVkIEc0IFJTQTQwOTYgU0hBMjU2IFRpbWVTdGFtcGluZyBDQQIQDE1pckuU
 # +jwqSj0pB4A9WjANBglghkgBZQMEAgEFAKBpMBgGCSqGSIb3DQEJAzELBgkqhkiG
-# 9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIzMDQyNzIxMTUwOFowLwYJKoZIhvcNAQkE
-# MSIEINrgttlFJKBP0exrdBDLmPDqTBDT9tia2yyc6qKYOSH7MA0GCSqGSIb3DQEB
-# AQUABIICAMM/Le3YDK4t3v/5LBUCscOuG2i7qUpZ4cG4s7wIfoRzqFBNhxKtNJJj
-# OfOq+zJxUa+wsf7+1WY40YBOL0W4lyI9ayRU0VK+3ClNdqWhNogDbyVSeJlY54H2
-# LM6zVowIWsJ9olzH8qCS4ZAeWzRqgoxkrErAW86/fOu1T6M6ntgrlC7nnZ5JTlbG
-# mtY4cXASs4uFoj/aldt28qPKuPdmtRKTmerC51WU/0E6lKRJMkMM1GzUtTULGu80
-# YF2mqmF7qnmGSKMHM3jisBNe7FuuMkzdMcxDS5F7PQmcKWTz7hMQEFX35Sl6khf7
-# hjjoLf3o5Mq1sTdGShqqeYJH/2nvhGdG3iTU4hQ/qxoxecJN8gmT3j6ElAAv5My4
-# ThDQ8mi19MOGd2iSph1eVqEu8y3tHCy1ybVA+62xMZ7OD9htRBct6PEN1IIoxkBt
-# q+nO3rq+tDZtRIgwl6zGpRCrQz1HMUFCZ/nK+7rRiOnyJsc9U6c77BxQ6m2q+I6U
-# XZy6SpKOixgIWohHUZM1OFsA8j6lNqn/huaZEcFfPaQSglNCkFwsyKBBsGZJn2o8
-# gt/ejxDShmub00vsNYhAHuY1r1GobmN/FK0BmVArhoVnPmDgKc2vXGCZs1+C2NCk
-# SSe5p6zyWyLZMDqpUhzSS2PivV0W5j1LchHnytqn2gJOGgja2in/
+# 9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIzMDUwMTIwNTQwMlowLwYJKoZIhvcNAQkE
+# MSIEIBU2g4xNqZRSGtrJiZM7QMilVaTJUC/fz4byKBziO46nMA0GCSqGSIb3DQEB
+# AQUABIICAFGQsgRtEPwn9viNEFtFto1X6N41puLRnubkwowzPl5t/PjqlAF/Xs1c
+# G+z2we9LSEdW6oSUzo+oH88HLCeFeIuksGr47TKuL2sdDzbFvgkLfVzAhrBiMzUq
+# /xrz6vYbmorvEXvxWxbhZhyUb7/AqKmBFLCDg5iy/9GtfEOzXIzjsKDB2p40gXBe
+# m7gk0Cu9W92B+4DoKY1PsiEz8mD8peWWvDCm4ovTVa1edRjXzcr3PPvTRKahM/DC
+# UchNlzDlfkjuSJWbcxU67OC0EfHBtLRud0vQs15yGYSz55kIvTjM6Fe+lixBfDYv
+# mM9jNO6Qk10zRBkMtz0kb5vImZp6aIrobd/OljUJlowumYBLr7g+z5b/ufDWE0Bv
+# YJS8ecx2Pbq/C0pjQXvCgzDeG9sptLj98aZukE2VwkuJyCIHbi7BzPHGDAR2RwCD
+# Bwcz1zw645YOWXnX/SIwNZcuEAqSLruf7icQDaN/QowgHDX2AyAgYvTqpJ7wAE+r
+# cH6Du2RvDEDg4caY2c77lxSSFn9NlqzQ2WtcYsupx+RSm4AtR07xZneUWhwjWouk
+# O0KvSYsPzytrV1lyY7qqNYN8jPCy5dlmDfxIMo+Qqw3FNLXtibM3O9Ahf8xZIEom
+# lvezldZjWyCeZ+tsmeIPmEtfVcgzUt6uHXOLti5hbpegJmzDcHgN
 # SIG # End signature block
